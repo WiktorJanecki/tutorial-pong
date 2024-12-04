@@ -2,15 +2,15 @@ use macroquad::prelude::*;
 
 #[macroquad::main("Tytuł Aplikacji")]
 async fn main() {
-    let background_txt= load_texture("assets/background.png").await.unwrap();
     let paddle_txt= load_texture("assets/paddle.png").await.unwrap();
     let ball_txt= load_texture("assets/ball.png").await.unwrap();
+    let font = load_ttf_font("./assets/SQUARED2.ttf").await.unwrap();
 
-    let ball_size = 50.;
+    let ball_size = 30.;
     let mut ball_pos = Vec2::new(100.,100.);
     let mut ball_vel = Vec2::new(200.,200.);
 
-    let paddle_width = 20.;
+    let paddle_width = 40.;
     let paddle_height = 200.;
     let paddle_speed = 500.;
     let mut paddle_pos = Vec2::new(0.,0.);
@@ -57,9 +57,10 @@ async fn main() {
             ball_vel.y = -ball_vel.y;
         }
 
-        draw_texture(&background_txt,0.,0.,WHITE);
-
-        draw_text(format!("SCORE: {}", score).as_str(), 32., 48., 32., WHITE);
+        clear_background(LIGHTGRAY);
+        let center = get_text_center(format!("{}", score).as_str(), Some(&font), 150, 1., 0.);
+        draw_text_ex(format!("{}", score).as_str(), screen_width()/2. - center.x, screen_height()/2. - center.y,TextParams { 
+            font: Some(&font), font_size: 150, color: WHITE, ..Default::default() });
         
         draw_texture(&ball_txt, ball_pos.x, ball_pos.y,WHITE);
         
