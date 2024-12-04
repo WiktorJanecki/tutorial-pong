@@ -2,6 +2,10 @@ use macroquad::prelude::*;
 
 #[macroquad::main("Tytuł Aplikacji")]
 async fn main() {
+    let background_txt= load_texture("assets/background.png").await.unwrap();
+    let paddle_txt= load_texture("assets/paddle.png").await.unwrap();
+    let ball_txt= load_texture("assets/ball.png").await.unwrap();
+
     let ball_size = 50.;
     let mut ball_pos = Vec2::new(100.,100.);
     let mut ball_vel = Vec2::new(200.,200.);
@@ -53,13 +57,14 @@ async fn main() {
             ball_vel.y = -ball_vel.y;
         }
 
+        draw_texture(&background_txt,0.,0.,WHITE);
 
-        // before this line show drawing string, error message with just getfps and with tostring
         draw_text(format!("SCORE: {}", score).as_str(), 32., 48., 32., WHITE);
         
-        draw_rectangle(ball_pos.x, ball_pos.y, ball_size, ball_size, WHITE);
-        draw_rectangle(0.,                            paddle_pos.y, paddle_width, paddle_height, WHITE);
-        draw_rectangle(screen_width() - paddle_width, paddle_pos.y, paddle_width, paddle_height, WHITE);
+        draw_texture(&ball_txt, ball_pos.x, ball_pos.y,WHITE);
+        
+        draw_texture(&paddle_txt, 4.,paddle_pos.y,WHITE);
+        draw_texture(&paddle_txt, screen_width() - paddle_width - 4.0 ,paddle_pos.y,WHITE);
 
         next_frame().await
     }
